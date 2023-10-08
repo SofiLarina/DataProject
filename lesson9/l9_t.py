@@ -11,3 +11,18 @@
 количество билетов по классам проживания,
 количество выживших пассажиров
 """
+
+def eratosthenes(n):
+    numbers = list(range(2, n + 1))
+    p = 2
+    while p <= n:
+        for i in range(2 * p, n + 1, p):
+            if i in numbers:
+                numbers.remove(i)
+        for j in numbers:
+            if j > p:
+                p = j
+                break
+    return numbers
+
+print(eratosthenes(100))
