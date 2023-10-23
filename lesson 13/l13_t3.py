@@ -10,9 +10,11 @@ import json
 
 start = 11
 end = start * 5
+#list =
 
 response = requests.get(f'https://rickandmortyapi.com/api/character/{start},{end}')
 data = response.json()
+print(data)
 
 characters = []
 for result in data:
@@ -24,4 +26,4 @@ for result in data:
 with open('characters.json', 'w') as f:
     json.dump(characters, f)
 
-print('Characters saved to characters.json file')
+print('Персонажи сохранены в characters.json файл')
