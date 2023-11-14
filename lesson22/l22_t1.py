@@ -17,7 +17,7 @@ class Base(DeclarativeBase):
 
 # создаем модель БД(будем конвертировать в табличку)
 class Films(Base):
-    __tablename__ = "Фильмы"
+    __tablename__ = "Films"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
@@ -36,14 +36,36 @@ def create_film(name, year, genre, rating):
 
 def show_films():
     with Session(bind=engine, autoflush=False) as db:
-        all_films = db.query(Films).all()
+        all_films = db.query(Films).first()
         print(all_films)
         for film in all_films:
             print(film.name, "-", film.year, ":", film.rating)
 
 def show_film_of_year(year):
     with Session(bind=engine, autoflush=False) as db:
-        film = db.query(Films).filter(Films.year == year).first()
-        print(film.name)
+        films = db.query(Films).filter(Films.year == year).all()
+        for film in films:
+            print(film.name)
 
-show_film_of_year(1997)
+def update_film(name, new_rating):
+    with Session(bind=engine, autoflush=False) as db:
+        film = db.query(Films).filter(Films.name == name).first()
+        if film != None:
+            print(film.name, "-", film.rating)
+            film.rating = new_rating
+            db.commit()
+        else:
+            print("Фильм с таким именем не существует")
+
+def delete_film(name):
+    with Session(bind=engine, autoflush=False) as db:
+        film = db.query(Films).filter(Films.name == name).first()
+        if film != None:
+            db.delete(film)
+            db.commit()
+        else:
+            print("Фильм с таким именем не существует")
+
+
+
+delete_film("Каплан")
