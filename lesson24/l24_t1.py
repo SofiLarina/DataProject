@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Float, Date
 from sqlalchemy.orm import DeclarativeBase, relationship
 from sqlalchemy.orm import Session
 from sqlalchemy import Table
+import datetime
 
 engine = create_engine("sqlite:///shop.db")
 
@@ -16,7 +17,7 @@ class User(Base):
     password = Column(String)
     role_id = Column(Integer, ForeignKey("role.id"))
     orders = relationship("Order", back_populates="user")
-    roles = relationship("Role", back_populates="users")
+    role = relationship("Role", back_populates="users")
 
 class Role(Base):
     __tablename__ = "role"
@@ -90,4 +91,4 @@ Create_Role("Admin")
 Create_User("kaplan2006@yandex.ru", "12345", 1)
 Create_Category("Electronics")
 Create_Product("Laptop", 10, 999.99, 1)
-Create_Order("17.11.2023", 999.99, 1)
+Create_Order(datetime.datetime.today(), 999.99, 1)
