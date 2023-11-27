@@ -1,6 +1,6 @@
 import socket
 from threading import Thread
-from working_with_db import registration, autorization
+from work_db import registration, autorization
 
 # создаем серверный сокет
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -20,7 +20,7 @@ def menu(connection):
         action = connection.recv(1024).decode()
         if action == "1":
             data = connection.recv(1024).decode().split(".")
-            answer = registration(name=data[0], login=data[1], password=data[2])
+            answer = registration(name=data[0], email=data[1], password=data[2])
             if answer:
                 connection.send("1".encode())
             else:
@@ -28,7 +28,7 @@ def menu(connection):
 
         elif action == "2":
             data = connection.recv(1024).decode().split(".")
-            answer = autorization(login=data[0], password=data[1])
+            answer = autorization(email=data[0], password=data[1])
             if not answer:
                 connection.send("2".encode())
             else:
